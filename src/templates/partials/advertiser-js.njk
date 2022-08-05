@@ -1,0 +1,10 @@
+{% if advertiser === 'SIZMEK' %}
+    <script src="https://secure-ds.serving-sys.com/BurstingScript/EBLoader.js"></script>
+    <script>EBModulesToLoad = ['EBCMD'];</script>
+    {% elif advertiser === 'ADKIT' %}
+    <script type="text/javascript" src="http://ds.serving-sys.com/BurstingScript/adKit/adkit.js"></script>
+    {% elif advertiser === 'DCS' %}
+    <script src="https://s0.2mdn.net/ads/studio/Enabler.js"></script>
+    {% elif advertiser === 'FT' %}
+    <script src="https://cdn.flashtalking.com/frameworks/js/api/2/10/html5API.js"></script>
+    {% endif %}

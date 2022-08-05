@@ -1,0 +1,68 @@
+@charset 'utf-8';
+/*! normalize-scss | EG+ 2018 | Author: J. Pfeifer | @egplusww.com */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+:focus {
+  outline-color: transparent;
+  outline-style: none;
+}
+html {
+	line-height: 1.15;
+	-webkit-text-size-adjust: 100%;
+}
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
+    margin:0;
+    padding:0;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+fieldset, img {
+    border:0;
+}
+// Remove the border on images inside links in IE 10.
+img {
+	border-style: none;
+}
+// Remove the gray background on active links in IE 10.
+a {
+	background-color: transparent;
+	text-decoration: none;
+	cursor: pointer;
+	/*&:-webkit-any-link {
+		color: inherit;
+		cursor: pointer;
+		text-decoration: none;
+	}*/
+}
+/* NO BORDER FireFox */
+object, embed { outline: none !important; }
+a img { border: none !important; }
+a img, a:focus, a:active  { outline: none !important; }
+//a { color: inherit; text-decoration: inherit; }
+// Add the correct font weight in Chrome, Edge, and Safari.
+b, strong {
+	font-weight: bolder;
+}
+// Remove the inheritance of text transform in Edge, Firefox, and IE.
+button, select {
+	text-transform: none;
+}
+// Correct the inability to style clickable types in iOS and Safari.
+button, [type="button"], [type="reset"], [type="submit"] {
+  -webkit-appearance: button;
+}
+// Remove the default vertical scrollbar in IE 10+.
+textarea {
+	overflow: auto;
+}
+// Add the correct box sizing in IE 10.
+[type="checkbox"], [type="radio"] {
+	box-sizing: border-box;
+	padding: 0;
+}

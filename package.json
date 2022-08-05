@@ -1,0 +1,57 @@
+{
+  "name": "egp-amp-ads",
+  "version": "1.0.0",
+  "description": "AMP Banner Style EG+",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab-eu.factory.tools:egplus-dus/egp-amp-ads.git"
+  },
+  "keywords": [
+    "AMP",
+    "ADS",
+    "BANNER"
+  ],
+  "author": "Jörg Pfeifer <joerg.pfeifer@egplusww.com>",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^9.0.0",
+    "browser-sync": "^2.27.5",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-css-base64": "^2.0.0",
+    "gulp-cssnano": "^2.1.3",
+    "gulp-data": "^1.3.1",
+    "gulp-html-replace": "^1.6.2",
+    "gulp-if": "^3.0.0",
+    "gulp-inline-images-no-http": "^1.3.3",
+    "gulp-postcss": "^9.0.1",
+    "gulp-remove-logging": "^1.2.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.0.0",
+    "gulp-uglify": "^3.0.2",
+    "plugin-error": "^1.0.1",
+    "postcss-flexbugs-fixes": "^3.3.0",
+    "sass": "^1.39.0",
+    "through2": "^3.0.2",
+    "uglify-save-license": "^0.4.1",
+    "uuid": "^8.3.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "ie >= 9",
+    "edge >= 15",
+    "ie_mob >= 10",
+    "ff >= 45",
+    "chrome >= 45",
+    "safari >= 7",
+    "opera >= 23",
+    "ios >= 7",
+    "android >= 4",
+    "bb >= 10"
+  ]
+}

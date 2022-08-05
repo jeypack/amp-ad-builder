@@ -1,0 +1,32 @@
+<script type="text/javascript" src="./js/egplus-html5-slim-2.3.0.min.js"></script>
+    {% if debug %}<script type="text/javascript" src="./js/ad-timeline-control-2.0.0.min.js"></script>{% endif %}
+    {% if hasSplitText %}<script type="text/javascript" src="./js/ad-split-text-2.0.0.min.min.js"></script>{% endif %}
+    <script type="text/javascript" src="./js/anim.min.js"></script>
+    <script>
+        {{- bottomjs -}}
+        {% if advertiser === 'SIZMEK' %}
+        // SIZMEK
+        EGPlus.on("init",function(){console.log("EGPlus on init"),window.adkit?adkit.onReady(initialize):initialize(),EGPlus.on("clickThrough",function(i){console.log("EGPlus on clickThrough SIZMEK"),EB.clickthrough()})});
+        {% elif advertiser === 'ADKIT' %}
+        // SIZMEK ADKIT
+        EGPlus.on('init', function() {if (window.adkit) { adkit.onReady(initialize); } else { initialize(); }});
+        {% elif advertiser === 'DCS' %}
+        // DOUBLECLICK
+        EGPlus.on("init",function(){console.log("EGPlus on init"),Enabler.isInitialized()?initialize():Enabler.addEventListener(studio.events.StudioEvent.INIT,initialize),EGPlus.on("clickThrough",function(i){console.log("EGPlus on clickThrough DOUBLECLICK"),Enabler.exit("Background Exit")})});
+        {% elif advertiser === 'FT' %}
+        // FLASHTALKING
+        EGPlus.on("init",function(){console.log("EGPlus on init"),EGPlus.ft=myFT,myFT.applyClickTag(EGPlus.$("#bg-exit")[0],1),initialize(),EGPlus.on("clickThrough",function(i){console.log("EGPlus on clickThrough FLASHTALKING")})});
+        {% elif advertiser === 'ADF' %}
+        // AdForm
+        EGPlus.on("init",function(){console.log("EGPlus on init"),EGPlus.$("svg *[mask], svg *[fill]").trimSvgUrls(),clickTAGvalue=dhtml.getVar("clickTAG","http://www.example.com"),landingpagetarget=dhtml.getVar("landingPageTarget","_blank"),initialize(),EGPlus.on("clickThrough",function(i){console.log("EGPlus on clickThrough AD FORM"),window.open(clickTAGvalue,landingpagetarget)})});
+        {% elif advertiser === 'ADFM' %}
+        // AdForm MRAID
+        EGPlus.on("init",function(){console.log("EGPlus on init"),EGPlus.$("svg *[mask], svg *[fill]").trimSvgUrls(),initialize(),EGPlus.on("clickThrough",function(i){console.log("EGPlus on clickThrough AD FORM MRAID"),mraid.open(Adform.getClickURL("clickTAG"))})});
+        {% elif advertiser === 'GDN' or advertiser === 'DCM' or advertiser === 'ADW' or advertiser === 'APPNEXUS' or advertiser === 'LR' %}
+        // GoogleDisplayNetwork DoubleClickCampaignManager Adwords Appnexus
+        EGPlus.on("init",function(){console.log("EGPlus on init"),initialize(),EGPlus.on("clickThrough",function(i){console.log("EGPlus on clickThrough")})});
+        {% else %}
+        // IAB STANDARD CLICKTAG GOES VIA URL PARAMS - NO NEED FOR EXTRA LISTENER
+        EGPlus.on("init",function(){console.log("EGPlus on init"),initialize()});
+        {%- endif %}
+    </script>

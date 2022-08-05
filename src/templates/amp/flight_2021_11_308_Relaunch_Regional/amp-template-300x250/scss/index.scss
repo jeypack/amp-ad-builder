@@ -1,0 +1,97 @@
+@import "../../scss/mixins";
+@import "../../scss/keyframes";
+
+//
+//BANNER SPECIFIC SIZE
+$ad-width: 300px;
+$ad-height: 250px;
+$ad-std-duration: 0.7s;
+$ad-mid-duration: 1.75s;
+
+//
+//START WITH KEYFRAME DEFINITIONS
+@include make-keyframe(peugeotLogoStart, 0.8s, 1.5s, 0.5s, translateY(0), translateY(0), translateY(-50px), 0, 1, 1);
+//<shape> = rect(<top>, <right>, <bottom>, <left>)
+// 100% flaeche z.B. MR (0px, 300px, 250px, 0px)
+// von unten nach oben (<top> 100% height bis 0)
+// von oben nach unten (<bottom> 0 bis 100% height)
+// von links nach rechts (<right> 0 bis 100% width)
+// von rechts nach links (<left> 100% width bis 0)
+@include make-clip-from-to(peugeotCopyClip1, rect(250px, 300px, 250px, 0px), rect(0px, 300px, 250px, 0px), 1, 1);
+@include make-clip-from-to(peugeotCopyClip2, rect(190px, 300px, 190px, 0px), rect(160px, 300px, 250px, 0px), 1, 1);
+@include make-clip-from-to(peugeotCopyClip3, rect(215px, 300px, 215px, 0px), rect(185px, 300px, 250px, 0px), 1, 1);
+@include make-clip-from-to(peugeotCopyClip4, rect(75px, 300px, 75px, 0px), rect(0px, 300px, 250px, 0px), 1, 1);
+@include make-clip-from-to(peugeotCopyClip5, rect(100px, 300px, 100px, 0px), rect(60px, 300px, 250px, 0px), 1, 1);
+@include make-clip-from-to(peugeotImgClip1, rect(35px, 300px, 35px, 0px), rect(-75px, 300px, 150px, 0px), 1, 1);
+@include make-clip-from-to(peugeotImgClip2, rect(150px, 300px, 150px, 0px), rect(0px, 300px, 250px, 0px), 1, 1);
+@include make-clip-from-to(peugeotImgClip3, rect(225px, 300px, 225px, 0px), rect(50px, 300px, 650px, 0px), 1, 1);
+@include make-clip-from-to(peugeotWhite, rect(125px, 300px, 125px, 0px), rect(0px, 300px, 250px, 0px), 1, 1);
+//@include make-clip-from-to(peugeotTopBottomClip, rect(0px, 300px, 0px, 0px), rect(0px, 300px, 250px, 0px), 1, 1);
+//@include make-keyframe-from-to($name, $transform-from: translateX(0%), $transform-to: translateX(0%), $opacity-from: 0, $opacity-to: 1)
+@include make-keyframe-from-to(peugeotBottomUp, translateY(100%), translateY(0%), 1, 1);
+
+//@include make-keyframe(inAndOut2000, 0.6s, 2.0s, 0.8s);
+//make-keyframe($name, $duration-in: 0.6s, $duration-to: 2.0s, $duration-out: 0.6s, $transform-in: translateX(0%), $transform-to: translateX(0%), $transform-out: translateX(0%), $opacity-in: 0, $opacity-to: 1, $opacity-out: 0)
+
+//
+//IMPORTANT! STANDARD FRAME STYLES
+@import "../../scss/global";
+
+//
+//BANNER SPECIFIC STYLES
+.anim .cta { width: 106px; height: 20px; margin: 0; }
+//animation: name, duration, timing-function, delay, iteration-count, direction, fill-mode, play-state (running/paused)
+//EXAMPLE: @include make-anim(classname, keyframe anim name, duration, position, ease)
+.anim {
+    $position-main: 0.0s;
+
+    @include make-anim('frame-bkg-1', fadeIn, $ad-std-duration, $position-main);
+    @include make-anim('frame-logo-white', peugeotLogoStart, 1.75s, $position-main);
+    $position-main: $position-main+0.9s;
+    @include make-anim('frame-c-1', peugeotCopyClip1, 2.85s, $position-main);
+    $position-main: $position-main+2.5s;
+    @include make-anim('frame-bkg-2-1', peugeotImgClip2, $ad-mid-duration, $position-main);
+    $position-main: $position-main+0.15s;
+    @include make-anim('frame-bkg-2-2', peugeotImgClip3, $ad-mid-duration + 0.25s, $position-main);
+    $position-main: $position-main+0.05s;
+    @include make-anim('frame-c-2', peugeotCopyClip1, $ad-mid-duration, $position-main);
+    $position-main: $position-main+0.1s;
+    @include make-anim('frame-bkg-2-3', peugeotImgClip1, $ad-mid-duration, $position-main);
+    $position-main: $position-main+2.0s;
+    @include make-anim('frame-bkg-3', peugeotBottomUp, $ad-std-duration, $position-main);
+    $position-main: $position-main+0.4s;
+    @include make-anim('frame-disclaimer', fadeIn, $ad-std-duration, $position-main);
+    $position-main: $position-main+0.1s;
+    @include make-anim('frame-c-3', peugeotCopyClip2, 1.0s, $position-main);
+    $position-main: $position-main+0.1s;
+    @include make-anim('frame-c-4', peugeotCopyClip3, 1.0s, $position-main);
+    $position-main: $position-main+3.0s;
+    @include make-anim('frame-bkg-4', peugeotCopyClip1, $ad-mid-duration, $position-main);
+    @include make-anim('frame-white', peugeotWhite, $ad-mid-duration * 0.5, $position-main);
+    $position-main: $position-main+0.6s;
+    @include make-anim('frame-c-5', peugeotCopyClip4, 1.0s, $position-main);
+    $position-main: $position-main+0.1s;
+    @include make-anim('frame-c-6', peugeotCopyClip5, 1.0s, $position-main);
+    $position-main: $position-main+3.0s;
+    @include make-anim('frame-5', peugeotBottomUp, $ad-std-duration, $position-main);
+    $position-main: $position-main+3.5s;
+    @include make-anim('frame-6', peugeotCopyClip1, $ad-std-duration, $position-main);
+    $position-main: $position-main+0.5s;
+    /*
+    //HAENDLER ADRESSE
+    @include make-anim('bkg-adr', fadeIn, 1.0s, $position-main);
+    $position-main: $position-main + 0.25s;
+    @include make-anim('frame-adr', fadeIn, 1.0s, $position-main);
+    $position-main: $position-main+0.6s;
+    */
+    .frame-adr .cta {
+        animation: clickCta 2.0s cubic-bezier(0.68, -0.55, 0.265, 1.55) $position-main 1 normal forwards;
+    }
+}
+
+//.anim .frame-6-cta { animation: fromLeft 0.7s ease 4.25s 1 normal forwards; }
+//.anim .frame-6-cta .cta { transform-origin: 90% 50%; animation: pumpCta 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 14.5s 1 normal forwards; }
+
+//
+//IMPORTANT! ADDRESS PLUS CTA
+@import "block";
