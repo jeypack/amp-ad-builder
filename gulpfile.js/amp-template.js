@@ -15,7 +15,7 @@ const htmlReplace = require("gulp-html-replace");
 const browserSync = require("browser-sync").create();
 const reload = browserSync.reload;
 const del = require("del");
-//const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 //config.UID = uuidv4();
 
 //config.DEV_FOLDER
@@ -39,7 +39,7 @@ let config = {
   ],
   //AD_SIZES: ['800x250'],
   AD_CURRENT_INDEX: 0,
-  AD_CURRENT_INSIDE_INDEX: 1,
+  AD_CURRENT_INSIDE_INDEX: 0,
   AD_FORMATS: [
     ["MR", "WS", "SB", "BB"],
     ["MR", "WS", "SB", "BB"],
@@ -71,21 +71,23 @@ const enableProduction = (cb) => {
 
 const resetIndex = (cb) => {
   config.AD_CURRENT_INSIDE_INDEX = 0;
+  config.AD_CURRENT_INDEX = 0;
   cb();
 };
 
 const nextIndex = (cb) => {
   const names = config.AD_NAMES;
   const length = names.length;
-  const insideLength = config.AD_SIZES[config.AD_CURRENT_INDEX].length;
+  const insideLength = config.AD_SIZES[config.AD_CURRENT_INDEX][config.AD_CURRENT_INDEX].length;
   const nextIndex = config.AD_CURRENT_INDEX + 1;
   const nextInsideIndex = config.AD_CURRENT_INSIDE_INDEX + 1;
   if (nextInsideIndex < insideLength) {
     config.AD_CURRENT_INSIDE_INDEX = nextInsideIndex;
   } else {
-    config.AD_CURRENT_INSIDE_INDEX = 0;
     if (nextIndex < length) {
-      config.CURRENT = nextIndex;
+      //we set this inside if to stop looping
+      config.AD_CURRENT_INSIDE_INDEX = 0;
+      config.AD_CURRENT_INDEX = nextIndex;
     } else {
       //return false;
       cb();
@@ -96,23 +98,22 @@ const nextIndex = (cb) => {
 
 const setSrcPath = (cb) => {
   const name = config.AD_NAMES[config.AD_CURRENT_INDEX];
-  config.SRC_PATH =
-    config.SRC_PATH_MAIN + name + "/amp-template-" + config.AD_SIZES[config.AD_CURRENT_INSIDE_INDEX] + "/";
+  config.SRC_PATH = config.SRC_PATH_MAIN + name + "/amp-template-" + config.AD_SIZES[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX] + "/";
   cb();
 };
 
 const setBuildName = (cb) => {
   const flight = config.AD_FLIGHTS[config.AD_CURRENT_INDEX];
   const name = config.AD_NAMES[config.AD_CURRENT_INDEX];
-  const size = config.AD_SIZES[config.AD_CURRENT_INSIDE_INDEX];
-  const format = config.AD_FORMATS[config.AD_CURRENT_INSIDE_INDEX];
-  const version = config.AD_VERSION_DATE[config.AD_CURRENT_INSIDE_INDEX];
+  const size = config.AD_SIZES[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
+  const format = config.AD_FORMATS[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
+  const version = config.AD_VERSION_DATE[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
   //"_HTML5_#_AMP_"
   const namePart = "_HTML5_" + flight + name + "_AMP_";
   config.BUILD_NAME = config.AD_CLIENT + format + namePart + size + version;
   cb();
 };
-
+// temp
 const cleanDirectoryAll = (cb) => {
   del.sync(config.DEVELOPMENT ? [config.DEV_FOLDER + "**"] : [config.BUILD_FOLDER + "**"], {
     force: true,
@@ -122,21 +123,31 @@ const cleanDirectoryAll = (cb) => {
 
 const cleanDirectory = (cb) => {
   //del.bind(null, config.DEVELOPMENT ? [config.DEV_FOLDER + '**'] : [config.BUILD_FOLDER + '**']);
-  del.sync(
+  /* del.sync(
     config.DEVELOPMENT
       ? [config.DEV_FOLDER + config.BUILD_NAME + "/**"]
       : [config.BUILD_FOLDER + config.BUILD_NAME + "/**"],
     {
       force: true,
     }
-  );
+  ); */
+  if (!config.DEVELOPMENT) {
+    del.sync([config.BUILD_FOLDER + config.BUILD_NAME + "/**"], {
+      force: true,
+    });
+  }
+  //clean _temp folder every time!!!
+  del.sync([config.DEV_FOLDER + "**"], {
+    force: true,
+  });
+  del.sync([config.SRC_PATH_MAIN + "**/*.css"], {
+    force: true,
+  });
   cb();
 };
 
 const moveAssets = (cb) => {
-  const destination = config.DEVELOPMENT
-    ? config.DEV_FOLDER + config.BUILD_NAME
-    : config.BUILD_FOLDER + config.BUILD_NAME;
+  const destination = config.DEVELOPMENT ? config.DEV_FOLDER + config.BUILD_NAME : config.BUILD_FOLDER + config.BUILD_NAME;
   return src(config.SRC_PATH + "img/**/*").pipe(dest(destination + "/img/"));
 };
 
@@ -147,6 +158,27 @@ const createSassCss = (sources) => {
     //autoprefixer,
     flexbugsfixer,
   ];
+  if (config.DEVELOPMENT) {
+    const UID = uuidv4();
+    return src(sources)
+      .pipe(
+        sass
+          .sync({
+            outputStyle: "expanded",
+            precision: 10,
+            includePaths: [],
+          })
+          .on("error", sass.logError)
+      )
+      .pipe(postcss(processors))
+      .pipe(rename("index." + UID + ".css"))
+      .pipe(dest(config.SRC_PATH + "scss/"))
+      .pipe(
+        reload({
+          stream: true,
+        })
+      );
+  }
   return src(sources)
     .pipe(
       sass
@@ -158,8 +190,8 @@ const createSassCss = (sources) => {
         .on("error", sass.logError)
     )
     .pipe(postcss(processors))
-    .pipe(rename("index.css"))
-    .pipe(dest(config.SRC_PATH + "scss/"))
+    //.pipe(rename("index.css"))
+    //.pipe(dest(config.SRC_PATH + "scss/"))
     .pipe(cssnano({ safe: true }))
     .pipe(rename("index.min.css"))
     .pipe(dest(config.SRC_PATH + "scss/"))
@@ -173,14 +205,13 @@ const createSassCss = (sources) => {
 //ACTIVATE THIS FOR INLINE BUILD
 const buildHtml = (cb) => {
   const sourcesScss = [config.SRC_PATH + "scss/index.scss"];
-  const destination = config.DEVELOPMENT
-    ? config.DEV_FOLDER + config.BUILD_NAME
-    : config.BUILD_FOLDER + config.BUILD_NAME;
+  const destination = config.DEVELOPMENT ? config.DEV_FOLDER + config.BUILD_NAME : config.BUILD_FOLDER + config.BUILD_NAME;
+  const scssStream = createSassCss(sourcesScss);
   return src(config.SRC_PATH + "index.html")
     .pipe(
       htmlReplace({
         css: {
-          src: createSassCss(sourcesScss, "index.min"),
+          src: scssStream,
           tpl: "<style amp-custom>%s</style>",
         },
       })
@@ -228,19 +259,20 @@ const watchDirectory = (cb) => {
   cb();
 };
 
-const combinedTask = series(setSrcPath, setBuildName, enableProduction, cleanDirectory, moveAssets, buildHtml);
+const combinedTaskDev = series(setSrcPath, setBuildName, enableDevelopment, cleanDirectory, moveAssets, buildHtml);
+const combinedTaskBuild = series(setSrcPath, setBuildName, enableProduction, cleanDirectory, moveAssets, buildHtml);
 
 const buildTask = series(
   resetIndex, // 0
-  combinedTask,
+  combinedTaskBuild,
   nextIndex, // 1
-  combinedTask
+  combinedTaskBuild
   /* nextIndex, // 2
-  combinedTask,
+  combinedTaskBuild,
   nextIndex, // 3
-  combinedTask */
+  combinedTaskBuild */
 );
 
-exports.default = series(combinedTask, watchDirectory);
+exports.default = series(combinedTaskDev, watchDirectory);
 exports.build = buildTask;
-exports.clean = series(enableDevelopment, cleanDirectoryAll, enableProduction, cleanDirectoryAll);
+//exports.clean = series(enableDevelopment, cleanDirectoryAll, enableProduction, cleanDirectoryAll);

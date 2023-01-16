@@ -1,11 +1,12 @@
 @import "mixins";
-@import "keyframes";
 
 //
 //BANNER SPECIFIC SIZE
 $ad-width: 300px;
 $ad-height: 250px;
-$ad-std-duration: 0.6s;
+$ad-std-delay: 3s;
+$ad-std-duration: 0.7s;
+$ad-inout-duration: 3.5s;
 
 //
 //START WITH KEYFRAME DEFINITIONS

@@ -144,6 +144,7 @@
 //mixin creating absolute position animation via existing keyframes
 //animation: name, duration, timing-function, delay, iteration-count, direction, fill-mode, play-state (running/paused)
 //@include make-anim(classname, keyframe anim name, duration, position, ease)
+//($position * $play)
 @mixin make-anim(
   $class: "frame-bkg-1",
   $name: fadeIn,
@@ -152,7 +153,8 @@
   $ease: ease,
   $iteration: 1,
   $direction: normal,
-  $fill: forwards
+  $fill: forwards,
+  $play: 1
 ) {
   .#{$class} {
     animation: $name $duration $ease $position $iteration $direction $fill;

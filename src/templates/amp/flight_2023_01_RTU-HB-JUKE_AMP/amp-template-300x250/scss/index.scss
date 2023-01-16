@@ -1,5 +1,5 @@
-@import "../../scss/mixins";
-@import "../../scss/keyframes";
+@import "../../../scss/mixins";
+@import "../../../scss/keyframes";
 
 //
 //BANNER SPECIFIC SIZE
@@ -23,7 +23,7 @@ $ad-inout-duration: 3.5s;
 
 //
 //IMPORTANT! STANDARD FRAME STYLES
-@import "../../scss/global";
+@import "../../../scss/global";
 
 //
 //BANNER SPECIFIC STYLES
@@ -33,7 +33,7 @@ $ad-inout-duration: 3.5s;
   margin: 0;
 }
 .anim .frame-bkg-1 {
-  transform-origin: 45% 50%;
+  transform-origin: 5% 50%;
 }
 .anim .frame-c-1,
 .anim .frame-ePower {
@@ -48,8 +48,6 @@ $ad-inout-duration: 3.5s;
   @include make-anim("frame-verbrauch", fadeIn, $ad-std-duration, $position-main);
   $position-main: 0.2s;
   @include make-anim("frame-c-1", scaleInAndOut2500, $ad-inout-duration, $position-main);
-  $position-main: $position-main + 0.2;
-  @include make-anim("frame-ePower", scaleInAndOut2500, $ad-inout-duration, $position-main);
   $position-main: $position-main + 0.5;
   @include make-anim("frame-cta", fromRight, $ad-std-duration, $position-main);
   $position-main: $position-main + $ad-std-delay;
