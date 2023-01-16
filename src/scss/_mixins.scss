@@ -3,81 +3,112 @@
 @use "sass:math";
 
 //@include make-clip(inAndOut2000, 0.6s, 2.0s, 0.8s);
-@mixin make-clip($name, $duration-in: 0.6s, $duration-to: 2.0s, $duration-out: 0.6s, $transform-in: translateX(0%), $transform-to: translateX(0%), $transform-out: translateX(0%), $opacity-in: 0, $opacity-to: 1, $opacity-out: 0, $clip-in: rect(0px, 300px, 250px, 0px), $clip-to: rect(0px, 300px, 250px, 0px), $clip-out: rect(0px, 300px, 250px, 0px)) {
-	//100%
-	$duration-total: $duration-to + $duration-out;
-	$percentIn: math.div($duration-in, $duration-total) * 100%;
-	$percentTo: math.div($duration-to, $duration-total) * 100%;
+@mixin make-clip(
+  $name,
+  $duration-in: 0.6s,
+  $duration-to: 2s,
+  $duration-out: 0.6s,
+  $transform-in: translateX(0%),
+  $transform-to: translateX(0%),
+  $transform-out: translateX(0%),
+  $opacity-in: 0,
+  $opacity-to: 1,
+  $opacity-out: 0,
+  $clip-in: rect(0px, 300px, 250px, 0px),
+  $clip-to: rect(0px, 300px, 250px, 0px),
+  $clip-out: rect(0px, 300px, 250px, 0px)
+) {
+  //100%
+  $duration-total: $duration-to + $duration-out;
+  $percentIn: math.div($duration-in, $duration-total) * 100%;
+  $percentTo: math.div($duration-to, $duration-total) * 100%;
 
-	@keyframes #{$name} {
-		0% {
-			opacity: $opacity-in;
-			transform: $transform-in;
-			clip: #{$clip-in};
-		}
+  @keyframes #{$name} {
+    0% {
+      opacity: $opacity-in;
+      transform: $transform-in;
+      clip: #{$clip-in};
+    }
 
-		#{$percentIn} {
-			opacity: $opacity-to;
-			transform: $transform-to;
-			clip: #{$clip-to};
-		}
+    #{$percentIn} {
+      opacity: $opacity-to;
+      transform: $transform-to;
+      clip: #{$clip-to};
+    }
 
-		#{$percentTo} {
-			opacity: $opacity-to;
-			transform: $transform-to;
-			clip: #{$clip-to};
-		}
+    #{$percentTo} {
+      opacity: $opacity-to;
+      transform: $transform-to;
+      clip: #{$clip-to};
+    }
 
-		100% {
-			opacity: $opacity-out;
-			transform: $transform-out;
-			clip: #{$clip-out};
-		}
-	}
+    100% {
+      opacity: $opacity-out;
+      transform: $transform-out;
+      clip: #{$clip-out};
+    }
+  }
 }
 
 //@include make-keyframe(inAndOut2000, 0.6s, 2.0s, 0.8s);
-@mixin make-keyframe($name, $duration-in: 0.6s, $duration-to: 2.0s, $duration-out: 0.6s, $transform-in: translateX(0%), $transform-to: translateX(0%), $transform-out: translateX(0%), $opacity-in: 0, $opacity-to: 1, $opacity-out: 0) {
-	//100%
-	$duration-total: $duration-to + $duration-out;
-	$percentIn: math.div($duration-in, $duration-total) * 100%;
-	$percentTo: math.div($duration-to, $duration-total) * 100%;
+@mixin make-keyframe(
+  $name,
+  $duration-in: 0.6s,
+  $duration-to: 2s,
+  $duration-out: 0.6s,
+  $transform-in: translateX(0%),
+  $transform-to: translateX(0%),
+  $transform-out: translateX(0%),
+  $opacity-in: 0,
+  $opacity-to: 1,
+  $opacity-out: 0
+) {
+  //100%
+  $duration-total: $duration-to + $duration-out;
+  $percentIn: math.div($duration-in, $duration-total) * 100%;
+  $percentTo: math.div($duration-to, $duration-total) * 100%;
 
-	@keyframes #{$name} {
-		0% {
-			opacity: $opacity-in;
-			transform: $transform-in;
-		}
+  @keyframes #{$name} {
+    0% {
+      opacity: $opacity-in;
+      transform: $transform-in;
+    }
 
-		#{$percentIn} {
-			opacity: $opacity-to;
-			transform: $transform-to;
-		}
+    #{$percentIn} {
+      opacity: $opacity-to;
+      transform: $transform-to;
+    }
 
-		#{$percentTo} {
-			opacity: $opacity-to;
-			transform: $transform-to;
-		}
+    #{$percentTo} {
+      opacity: $opacity-to;
+      transform: $transform-to;
+    }
 
-		100% {
-			opacity: $opacity-out;
-			transform: $transform-out;
-		}
-	}
+    100% {
+      opacity: $opacity-out;
+      transform: $transform-out;
+    }
+  }
 }
 
 //@include make-keyframe-from-to($name, $transform-from: translateX(0%), $transform-to: translateX(0%), $opacity-from: 0, $opacity-to: 1)
-@mixin make-keyframe-from-to($name, $transform-from: translateX(0%), $transform-to: translateX(0%), $opacity-from: 0, $opacity-to: 1) {
-	@keyframes #{$name} {
-		0% {
-			opacity: $opacity-from;
-			transform: $transform-from;
-		}
-		100% {
-			opacity: $opacity-to;
-			transform: $transform-to;
-		}
-	}
+@mixin make-keyframe-from-to(
+  $name,
+  $transform-from: translateX(0%),
+  $transform-to: translateX(0%),
+  $opacity-from: 0,
+  $opacity-to: 1
+) {
+  @keyframes #{$name} {
+    0% {
+      opacity: $opacity-from;
+      transform: $transform-from;
+    }
+    100% {
+      opacity: $opacity-to;
+      transform: $transform-to;
+    }
+  }
 }
 
 //<shape> = rect(<top>, <right>, <bottom>, <left>)
@@ -86,29 +117,46 @@
 // von oben nach unten (<bottom> 0 bis 100% height)
 // von links nach rechts (<right> 0 bis 100% width)
 // von rechts nach links (<left> 100% width bis 0)
-@mixin make-clip-from-to($name, $clip-from: rect(250px, 300px, 250px, 0px), $clip-to: rect(0px, 300px, 250px, 0px), $opacity-from: 0, $opacity-to: 1, $transform-from: translateX(0%), $transform-to: translateX(0%)) {
-	@keyframes #{$name} {
-		0% {
-			opacity: $opacity-from;
-			transform: $transform-from;
-			clip: #{$clip-from};
-		}
+@mixin make-clip-from-to(
+  $name,
+  $clip-from: rect(250px, 300px, 250px, 0px),
+  $clip-to: rect(0px, 300px, 250px, 0px),
+  $opacity-from: 0,
+  $opacity-to: 1,
+  $transform-from: translateX(0%),
+  $transform-to: translateX(0%)
+) {
+  @keyframes #{$name} {
+    0% {
+      opacity: $opacity-from;
+      transform: $transform-from;
+      clip: #{$clip-from};
+    }
 
-		100% {
-			opacity: $opacity-to;
-			transform: $transform-to;
-			clip: #{$clip-to};
-		}
-	}
+    100% {
+      opacity: $opacity-to;
+      transform: $transform-to;
+      clip: #{$clip-to};
+    }
+  }
 }
 
 //mixin creating absolute position animation via existing keyframes
 //animation: name, duration, timing-function, delay, iteration-count, direction, fill-mode, play-state (running/paused)
 //@include make-anim(classname, keyframe anim name, duration, position, ease)
-@mixin make-anim($class: 'frame-bkg-1', $name: fadeIn, $duration: 0.6s, $position: 0.0s, $ease: ease, $iteration: 1, $direction: normal, $fill: forwards) {
-	.#{$class} {
-		animation: $name $duration $ease $position $iteration $direction $fill;
-	}
+@mixin make-anim(
+  $class: "frame-bkg-1",
+  $name: fadeIn,
+  $duration: 0.6s,
+  $position: 0s,
+  $ease: ease,
+  $iteration: 1,
+  $direction: normal,
+  $fill: forwards
+) {
+  .#{$class} {
+    animation: $name $duration $ease $position $iteration $direction $fill;
+  }
 }
 
 //

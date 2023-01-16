@@ -35,15 +35,15 @@ let config = {
   //PATH_INCLUDES_SASS: ['bower_components/juiced/sass/'],
   PATH_INCLUDES_SASS: [],
   HTDOCS_PATH: '/Applications/MAMP/htdocs/',
-  AD_VERSION_DATE: ['V03_220217', 'V02_220217', 'V02_220217', 'V01_220217'],
+  AD_VERSION_DATE: ['V01_230113', 'V01_230113', 'V01_230113', 'V01_230113'],
   AD_SIZES: ['300x250', '160x600', '728x90', '800x250'],
   //AD_SIZES: ['800x250'],
-  AD_CURRENT_SIZE_INDEX: 2,
+  AD_CURRENT_SIZE_INDEX: 0,
   AD_FORMATS: ['MR', 'WS', 'SB', 'BB'],
   //AD_FORMATS: ['BB'],
   //AD_CLIENT: 'peugeot_de_',
   AD_CLIENT: 'nissan_united_at_',
-  AD_NAME: '_HTML5_flight_2022_02_townstar_dealer_digital_',
+  AD_NAME: '_HTML5_flight_2023_01_RTU-HB-JUKE_AMP_',
   SRC_PATH_MAIN: './src/amp-template-',
   SRC_PATH: './src/amp-template-',
   SRC_VENDOR: './src/vendor/',
@@ -83,6 +83,7 @@ const setBuildName = (cb) => {
   const size = config.AD_SIZES[config.AD_CURRENT_SIZE_INDEX];
   const format = config.AD_FORMATS[config.AD_CURRENT_SIZE_INDEX];
   const version = config.AD_VERSION_DATE[config.AD_CURRENT_SIZE_INDEX];
+  //const name = config.AD_VERSION_DATE[config.AD_CURRENT_SIZE_INDEX];
   config.BUILD_NAME = config.AD_CLIENT + format + config.AD_NAME + size + version;
   cb();
 };

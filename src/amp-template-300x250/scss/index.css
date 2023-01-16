@@ -90,22 +90,40 @@
     transform: scale(1);
   }
 }
-@keyframes inAndOut2500 {
+@keyframes scaleInAndOut2500 {
   0% {
     opacity: 0;
-    transform: translateX(0%);
+    transform: scale(0.75);
   }
-  30.303030303% {
+  50% {
     opacity: 1;
-    transform: translateX(0%);
+    transform: scale(1);
   }
-  75.7575757576% {
+  78.125% {
     opacity: 1;
-    transform: translateX(0%);
+    transform: scale(1);
   }
   100% {
     opacity: 0;
-    transform: translateX(0%);
+    transform: scale(1);
+  }
+}
+@keyframes fadeInAndScale5500 {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  13.6363636364% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  22.7272727273% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.15);
   }
 }
 @keyframes frameDCO {
@@ -263,64 +281,52 @@ sup {
 }
 
 .anim .cta {
-  width: 163px;
-  height: 30px;
+  width: 145px;
+  height: 29px;
   margin: 0;
 }
 
 .anim .frame-bkg-1 {
-  animation: fadeIn 0.7s ease 0s 1 normal forwards;
+  transform-origin: 5% 50%;
 }
-.anim .frame-verbrauch-black {
+
+.anim .frame-c-1,
+.anim .frame-ePower {
+  transform-origin: 50% 25%;
+}
+
+.anim .frame-bkg-1 {
+  animation: fadeInAndScale5500 5.5s ease 0s 1 normal forwards;
+}
+.anim .frame-verbrauch {
   animation: fadeIn 0.7s ease 0s 1 normal forwards;
 }
 .anim .frame-c-1 {
-  animation: fromRight 0.7s ease 0.2s 1 normal forwards;
+  animation: scaleInAndOut2500 3.5s ease 0.2s 1 normal forwards;
 }
-.anim .frame-c-1-2 {
-  animation: fromRight 0.7s ease 0.4s 1 normal forwards;
-}
-.anim .frame-bkg-2 {
-  animation: fadeIn 0.7s ease 3.4s 1 normal forwards;
+.anim .frame-cta {
+  animation: fromRight 0.7s ease 0.7s 1 normal forwards;
 }
 .anim .frame-c-2 {
-  animation: fromRight 0.7s ease 3.4s 1 normal forwards;
-}
-.anim .frame-c-3 {
   animation: fromRight 0.7s ease 3.7s 1 normal forwards;
 }
-.anim .frame-bkg-3 {
-  animation: fadeIn 0.7s ease 6.7s 1 normal forwards;
-}
-.anim .frame-verbrauch-white {
-  animation: fadeIn 0.7s ease 6.7s 1 normal forwards;
+.anim .frame-c-3 {
+  animation: fromRight 0.7s ease 4s 1 normal forwards;
 }
 .anim .frame-c-4 {
-  animation: fromRight 0.7s ease 6.7s 1 normal forwards;
-}
-.anim .frame-c-5 {
   animation: fromRight 0.7s ease 7s 1 normal forwards;
 }
-.anim .frame-logo-nim {
-  animation: fromRight 0.7s ease 7.3s 1 normal forwards;
-}
-.anim .frame-bkg-4 {
-  animation: fadeIn 0.7s ease 10.3s 1 normal forwards;
-}
-.anim .frame-c-6 {
-  animation: fromRight 0.7s ease 10.3s 1 normal forwards;
-}
 .anim .frame-dco {
-  animation: frameDCO 0.7s ease 13.3s 1 normal forwards;
+  animation: frameDCO 0.7s ease 10s 1 normal forwards;
 }
-.anim .frame-c-7 {
-  animation: fromRight 0.7s ease 13.8s 1 normal forwards;
+.anim .frame-c-4 {
+  animation: fromRight 0.7s ease 10.5s 1 normal forwards;
 }
 .anim .frame-adr {
-  animation: fadeIn 1s ease 14.05s 1 normal forwards;
+  animation: fadeIn 1s ease 10.75s 1 normal forwards;
 }
 .anim .frame-adr .cta {
-  animation: clickCta 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 14.65s 1 normal forwards;
+  animation: clickCta 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 11.35s 1 normal forwards;
 }
 
 /* ADDRESS PLUS CTA */
@@ -338,7 +344,7 @@ sup {
   text-align: left;
   font-size: 14px;
   line-height: 1.25;
-  padding: 120px 0 0 20px;
+  padding: 130px 0 0 20px;
 }
 .inner .block .copy.shadow {
   text-shadow: 0px 3px 10px rgba(0, 0, 0, 0.4);

@@ -1,80 +1,79 @@
 @charset 'utf-8';
 //keyframes-scss | EG+ 2021 | Author: J. Pfeifer | @egplusww.com
 
-
 //animation: name, duration, timing-function, delay, iteration-count, direction, fill-mode, play-state (running/paused)
 @keyframes fadeIn {
   0% {
-    opacity: 0
+    opacity: 0;
   }
   100% {
-    opacity: 1
+    opacity: 1;
   }
 }
 @keyframes fadeOut {
   0% {
-    opacity: 1
+    opacity: 1;
   }
   100% {
-    opacity: 0
+    opacity: 0;
   }
 }
 
 @keyframes fromLeft {
   0% {
     opacity: 0;
-    transform: translateX(-40px)
+    transform: translateX(-40px);
   }
   100% {
     opacity: 1;
-    transform: translateX(0)
+    transform: translateX(0);
   }
 }
 @keyframes toRight {
   0% {
     opacity: 1;
-    transform: translateX(0)
+    transform: translateX(0);
   }
 
   100% {
     opacity: 0;
-    transform: translateX(40px)
+    transform: translateX(40px);
   }
 }
 
 @keyframes fromRight {
   0% {
     opacity: 0;
-    transform: translateX(40px)
+    transform: translateX(40px);
   }
   100% {
     opacity: 1;
-    transform: translateX(0)
+    transform: translateX(0);
   }
 }
 @keyframes toLeft {
   0% {
     opacity: 1;
-    transform: translateX(0)
+    transform: translateX(0);
   }
   100% {
     opacity: 0;
-    transform: translateX(-40px)
+    transform: translateX(-40px);
   }
 }
 
 @keyframes clickCta {
   0% {
     opacity: 0;
-    transform: translateX(25%) scale(1.0);
+    transform: translateX(25%) scale(1);
   }
   45% {
     opacity: 1;
-    transform: translateX(0%) scale(1.0);
+    transform: translateX(0%) scale(1);
   }
   55% {
     opacity: 1;
-    transform: translateX(0%) scale(1.0);
+    transform: translateX(0%) scale(1);
   }
   70% {
     opacity: 1;
@@ -89,7 +88,7 @@
 @keyframes pumpCta {
   0% {
     opacity: 1;
-    transform: scale(1.0);
+    transform: scale(1);
   }
   40% {
     opacity: 1;
