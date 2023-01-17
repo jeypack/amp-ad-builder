@@ -15,9 +15,9 @@ const htmlReplace = require("gulp-html-replace");
 const browserSync = require("browser-sync").create();
 const reload = browserSync.reload;
 const del = require("del");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 //config.UID = uuidv4();
-//const zipper = require("./gulp-zipper");
+const zipper = require("./gulp-zipper");
 
 //config.DEV_FOLDER
 let config = {
@@ -28,6 +28,7 @@ let config = {
   HTDOCS_PATH: "/Applications/MAMP/htdocs/",
   //AD_CLIENT: 'peugeot_de_',
   AD_CLIENT: "nissan_united_at_",
+  AD_CAMPAIGN: "RTU-HB",
   //config.AD_CURRENT_INSIDE_INDEX
   AD_VERSION_DATE: [
     ["V03_230113", "V01_230113", "V01_230113"],
@@ -40,7 +41,7 @@ let config = {
     ["300x250", "160x600", "728x90", "800x250"],
   ],
   //used for AD_FLIGHTS && AD_NAMES
-  AD_CURRENT_INDEX: 2,
+  AD_CURRENT_INDEX: 1,
   AD_CURRENT_INSIDE_INDEX: 2,
   AD_FORMATS: [
     ["MR", "WS", "SB", "BB"],
@@ -50,6 +51,8 @@ let config = {
   //AD_CURRENT_INDEX
   AD_FLIGHTS: ["flight_2023_01_", "flight_2023_01_", "flight_2023_01_"],
   AD_NAMES: ["RTU-HB-XTrail", "RTU-HB-QQ", "RTU-HB-JUKE"],
+  AD_PREFIX: ["NAT_AMP_", "NAT_AMP_", "NAT_AMP_"],
+  AD_SUFFIX: ["", "", ""],
   SRC_PATH_MAIN: "./src/",
   //scr path will be defined inside 'setSrcPath'
   SRC_PATH: "",
@@ -115,10 +118,39 @@ const setBuildName = (cb) => {
   //"_HTML5_#_AMP_"
   const namePart = "_HTML5_" + flight + name + "_AMP_";
   config.BUILD_NAME = config.AD_CLIENT + format + namePart + size + version;
+  /* const prefix = config.AD_PREFIX[config.AD_CURRENT_INDEX];
+  const suffix = config.AD_SUFFIX[config.AD_CURRENT_INDEX];
+  config.BUILD_NAME = prefix + name + suffix + "_" + size; */
   console.log("BUILD_NAME:", config.BUILD_NAME);
   cb();
 };
-// temp
+
+// ++++++
+// temp +
+const zip = (cb) => {
+  const prefix = config.AD_PREFIX[config.AD_CURRENT_INDEX];
+  const suffix = config.AD_SUFFIX[config.AD_CURRENT_INDEX];
+  const name = config.AD_NAMES[config.AD_CURRENT_INDEX];
+  const size = config.AD_SIZES[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
+  let stream = src([config.BUILD_FOLDER + "*", "!" + config.BUILD_FOLDER + "zip"]);
+  //let stream = src([config.BUILD_FOLDER + config.BUILD_NAME]);
+  /* stream.pipe(
+    rename(function (path) {
+      // Updates the object in-place
+      // path.dirname path.basename path.extname = ".md";
+      path.basename = prefix + name + suffix + "_" + size;
+      console.log("rename", path.basename);
+    })
+  ); */
+  // get only folders inside directory without single files and zip folder
+  //return stream;
+  // config.AD_CAMPAIGN: "RTU-HB",
+  return stream.pipe(zipper({ destination: config.BUILD_FOLDER + "zip/", name: config.AD_CAMPAIGN }));
+  /*.pipe(zipper(adBundler.DEST + 'zip/', function (file, dest, msg) {
+    log(grey.bold('testZipper file:'), col.bold(path.basename(file.path)), grey.bold('destination:'), col.bold(dest), col.bold(msg));
+  }));*/
+};
+
 const cleanDirectoryAll = (cb) => {
   del.sync(config.DEVELOPMENT ? [config.DEV_FOLDER + "**"] : [config.BUILD_FOLDER + "**"], {
     force: true,
@@ -178,27 +210,29 @@ const createSassCss = (sources) => {
         })
       );
   }
-  return src(sources)
-    .pipe(
-      sass
-        .sync({
-          outputStyle: "expanded",
-          precision: 10,
-          includePaths: [],
+  return (
+    src(sources)
+      .pipe(
+        sass
+          .sync({
+            outputStyle: "expanded",
+            precision: 10,
+            includePaths: [],
+          })
+          .on("error", sass.logError)
+      )
+      .pipe(postcss(processors))
+      //.pipe(rename("index.css"))
+      //.pipe(dest(config.SRC_PATH + "scss/"))
+      .pipe(cssnano({ safe: true }))
+      .pipe(rename("index.min.css"))
+      .pipe(dest(destination + "/"))
+      .pipe(
+        reload({
+          stream: true,
         })
-        .on("error", sass.logError)
-    )
-    .pipe(postcss(processors))
-    //.pipe(rename("index.css"))
-    //.pipe(dest(config.SRC_PATH + "scss/"))
-    .pipe(cssnano({ safe: true }))
-    .pipe(rename("index.min.css"))
-    .pipe(dest(destination + "/"))
-    .pipe(
-      reload({
-        stream: true,
-      })
-    );
+      )
+  );
 };
 
 //ACTIVATE THIS FOR INLINE BUILD
@@ -283,5 +317,6 @@ const buildTask = series(
 );
 
 exports.default = series(combinedTaskBuild, combinedTaskDev, watchDirectory);
+exports.zip = series(zip);
 exports.build = buildTask;
 //exports.clean = series(enableDevelopment, cleanDirectoryAll, enableProduction, cleanDirectoryAll);

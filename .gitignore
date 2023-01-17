@@ -42,3 +42,4 @@ Thumbs.db
 
 # Ignore special files and folders
 /_temp
+/_build
