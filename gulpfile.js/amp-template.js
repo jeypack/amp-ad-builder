@@ -17,6 +17,7 @@ const reload = browserSync.reload;
 const del = require("del");
 const { v4: uuidv4 } = require('uuid');
 //config.UID = uuidv4();
+//const zipper = require("./gulp-zipper");
 
 //config.DEV_FOLDER
 let config = {
@@ -30,8 +31,8 @@ let config = {
   //config.AD_CURRENT_INSIDE_INDEX
   AD_VERSION_DATE: [
     ["V03_230113", "V01_230113", "V01_230113"],
-    ["V02_230113", "V01_230113", "V01_230113"],
-    ["V02_230113", "V01_230113", "V01_230113"],
+    ["V02_230113", "V01_230113", "V02_230113"],
+    ["V02_230113", "V01_230113", "V02_230113"],
   ],
   AD_SIZES: [
     ["300x250", "160x600", "728x90", "800x250"],
@@ -39,7 +40,7 @@ let config = {
     ["300x250", "160x600", "728x90", "800x250"],
   ],
   //used for AD_FLIGHTS && AD_NAMES
-  AD_CURRENT_INDEX: 1,
+  AD_CURRENT_INDEX: 2,
   AD_CURRENT_INSIDE_INDEX: 2,
   AD_FORMATS: [
     ["MR", "WS", "SB", "BB"],
