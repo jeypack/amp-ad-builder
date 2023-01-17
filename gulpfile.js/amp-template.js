@@ -130,25 +130,8 @@ const setBuildName = (cb) => {
 const zip = (cb) => {
   const prefix = config.AD_PREFIX[config.AD_CURRENT_INDEX];
   const suffix = config.AD_SUFFIX[config.AD_CURRENT_INDEX];
-  const name = config.AD_NAMES[config.AD_CURRENT_INDEX];
-  const size = config.AD_SIZES[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
   let stream = src([config.BUILD_FOLDER + "*", "!" + config.BUILD_FOLDER + "zip"]);
-  //let stream = src([config.BUILD_FOLDER + config.BUILD_NAME]);
-  /* stream.pipe(
-    rename(function (path) {
-      // Updates the object in-place
-      // path.dirname path.basename path.extname = ".md";
-      path.basename = prefix + name + suffix + "_" + size;
-      console.log("rename", path.basename);
-    })
-  ); */
-  // get only folders inside directory without single files and zip folder
-  //return stream;
-  // config.AD_CAMPAIGN: "RTU-HB",
-  return stream.pipe(zipper({ destination: config.BUILD_FOLDER + "zip/", name: config.AD_CAMPAIGN }));
-  /*.pipe(zipper(adBundler.DEST + 'zip/', function (file, dest, msg) {
-    log(grey.bold('testZipper file:'), col.bold(path.basename(file.path)), grey.bold('destination:'), col.bold(dest), col.bold(msg));
-  }));*/
+  return stream.pipe(zipper({ destination: config.BUILD_FOLDER + "zip/", campaign: config.AD_CAMPAIGN, prefix: prefix, suffix: suffix }));
 };
 
 const cleanDirectoryAll = (cb) => {

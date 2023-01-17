@@ -28,11 +28,26 @@ const createDirectory = (dir, cb) => {
 };
 
 //nissan_united_at_MR_HTML5_flight_2023_01_RTU-HB-JUKE_AMP_300x250V02_230113
-const getChunks = (basename) => {
-  const chunk1 = basename.split("")
+const parseBase = (basename) => {
+  const chunk1 = basename.split("HTML5");
+  const chunk2 = chunk1[0].split("_");
+  const chunk3 = chunk1[1].split("_");
+  const sizeParts = chunk3.slice(-2)[0].split("V");
+  const name = chunk3[4];
+  const size = sizeParts[0];
+  const version = sizeParts[1];
+  //console.log("parseBase", "chunk1:", chunk1);
+  //console.log("parseBase", "chunk2.slice(0, -2):", chunk2.slice(0, -2));
+  //console.log("parseBase", "chunk3:", chunk3);
+  /* console.log("parseBase", "name:", name);
+  console.log("parseBase", "size:", size);
+  console.log("parseBase", "version:", version); */
+  return {
+    name: name,
+    size: size,
+    version: version,
+  };
 };
-const getName = (basename) => {};
-const getSize = (basename) => {};
 
 // see 'Writing a plugin'
 // https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/README.md
@@ -64,7 +79,7 @@ module.exports = (opts, callback) => {
         return next();
       }
 
-      console.log('gulp-zipper handleFile', 'file:', file, 'countFiles:', countFiles);
+      //console.log('gulp-zipper handleFile', 'file:', file, 'countFiles:', countFiles);
       // create directory even if it does not exists
       createDirectory(destination, (err) => {
         if (!err) {
@@ -76,9 +91,11 @@ module.exports = (opts, callback) => {
                 zipped.compress();
                 // get the zipped file as a Buffer
                 //let buff = zipped.memory();
-                console.log("zip", "parseObj:", parseObj);
+                const baseObj = parseBase(parseObj.base);
+                const dest = destination + opts.prefix + baseObj.name + opts.suffix + "_" + baseObj.size + "_" + baseObj.version;
+                //console.log("zip", "dest:", dest);
                 // or save the zipped file to disk
-                zipped.save(destination + parseObj.base + ".zip", function (error) {
+                zipped.save(dest + ".zip", function (error) {
                   if (!error) {
                     countFiles++;
                     handle(file, parseObj);
@@ -112,7 +129,7 @@ module.exports = (opts, callback) => {
           json = JSON.parse(jsonStr),
           stamp = json[0].date.substr(2, 8);
         // or save the zipped file to disk
-        zipped.save(destination + opts.name + "-AD-BUNDLE-" + stamp + ".zip", function (error) {
+        zipped.save(destination + opts.campaign + "-AD-BUNDLE-" + stamp + ".zip", function (error) {
           if (!callback) {
             console.log("ZIPPER  ✔", countFiles, "files/directories successfully zipped :)");
           }
