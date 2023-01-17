@@ -296,7 +296,8 @@ const buildTask = series(
   nextIndex, // 7
   combinedTaskBuild,
   nextIndex, // 8
-  combinedTaskBuild
+  combinedTaskBuild,
+  zip
 );
 
 exports.default = series(combinedTaskBuild, combinedTaskDev, watchDirectory);
