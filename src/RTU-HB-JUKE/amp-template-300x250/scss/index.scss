@@ -1,0 +1,83 @@
+@import "../../../scss/mixins";
+@import "../../../scss/keyframes";
+
+//
+//BANNER SPECIFIC SIZE
+$ad-width: 300px;
+$ad-height: 250px;
+$ad-std-delay: 3s;
+$ad-std-duration: 0.7s;
+$ad-inout-duration: 4.0s;
+
+//
+//
+//START WITH KEYFRAME DEFINITIONS
+// @include make-keyframe(inAndOut2000, 0.6s, 2.0s, 0.8s);
+//@include make-keyframe(inAndOut2500, 1.0s, 2.5s, 0.8s);
+// make-keyframe($name, $duration-in: 0.6s, $duration-to: 2.0s, $duration-out: 0.6s, $transform-in: translateX(0%), $transform-to: translateX(0%), $transform-out: translateX(0%), $opacity-in: 0, $opacity-to: 1, $opacity-out: 0)
+@include make-keyframe(scaleInAndOut2500, 1.6s, 2.5s, 0.7s, scale(0.75), scale(1), scale(1), 0, 1, 0);
+@include make-keyframe(fadeInAndScale5500, 0.75s, 1.25s, 4.25s, scale(1), scale(1), scale(1.15), 0, 1, 1);
+// @include make-keyframe(fromRightAndOut2500, 0.6s, 2.5s, 0.6s, translateX(40px), translateX(0), translateX(0));
+// @include make-keyframe-from-to($name, $transform-from: translateX(0%), $transform-to: translateX(0%), $opacity-from: 0, $opacity-to: 1)
+@include make-keyframe-from-to(frameDCO, translateX(100%), translateX(0), 1, 1);
+
+//
+//IMPORTANT! STANDARD FRAME STYLES
+@import "../../../scss/global";
+
+//
+//BANNER SPECIFIC STYLES
+.anim .cta {
+  width: 145px;
+  height: 29px;
+  margin: 0;
+}
+.anim .frame-bkg-1 {
+  transform-origin: 5% 50%;
+}
+.anim .frame-c-1,
+.anim .frame-ePower {
+  transform-origin: 50% 25%;
+}
+
+//animation: name, duration, timing-function, delay, iteration-count, direction, fill-mode, play-state (running/paused)
+//make-anim($class: 'frame-bkg-1', $name: fadeIn, $duration: 0.6s, $position: 0.0s, $ease: ease, $iteration: 1, $direction: normal, $fill: forwards)
+.anim {
+  $position-main: 0s;
+  @include make-anim("frame-bkg-1", fadeInAndScale5500, 5.5s, $position-main);
+  @include make-anim("frame-verbrauch", fadeIn, $ad-std-duration, $position-main);
+  $position-main: 0.2s;
+  @include make-anim("frame-c-1", scaleInAndOut2500, $ad-inout-duration, $position-main);
+  $position-main: $position-main + 0.5;
+  @include make-anim("frame-cta", fromRight, $ad-std-duration, $position-main);
+  $position-main: $position-main + $ad-std-delay;
+  @include make-anim("frame-c-2", fromRight, $ad-std-duration, $position-main);
+  $position-main: $position-main + 0.3s;
+  @include make-anim("frame-c-3", fromRight, $ad-std-duration, $position-main);
+  $position-main: $position-main + $ad-std-delay;
+  @include make-anim("frame-c-4", fromRight, $ad-std-duration, $position-main);
+  $position-main: $position-main + $ad-std-delay;
+  //LEGAL
+  //@include make-anim('frame-legal', fadeIn, $ad-std-duration, $position-main);
+  //$position-main: $position-main+$ad-std-delay;
+  //HAENDLER ADRESSE
+  @include make-anim("frame-dco", frameDCO, $ad-std-duration, $position-main);
+  $position-main: $position-main + 0.5s;
+  @include make-anim("frame-c-4", fromRight, $ad-std-duration, $position-main);
+  //$position-main: $position-main+0.25s;
+  //@include make-anim('frame-c-8', fromRight, $ad-std-duration, $position-main);
+  $position-main: $position-main + 0.25s;
+  @include make-anim("frame-adr", fadeIn, 1s, $position-main);
+  $position-main: $position-main + 0.6s;
+
+  .frame-adr .cta {
+    animation: clickCta 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) $position-main 1 normal forwards;
+  }
+}
+
+//.anim .frame-6-cta { animation: fromLeft 0.7s ease 4.25s 1 normal forwards; }
+//.anim .frame-6-cta .cta { transform-origin: 90% 50%; animation: pumpCta 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 14.5s 1 normal forwards; }
+
+//
+//IMPORTANT! ADDRESS PLUS CTA
+@import "block";

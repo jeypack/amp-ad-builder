@@ -7,7 +7,7 @@ $ad-width: 300px;
 $ad-height: 250px;
 $ad-std-delay: 3s;
 $ad-std-duration: 0.7s;
-$ad-inout-duration: 3.5s;
+$ad-inout-duration: 4.0s;
 
 //
 //
@@ -78,10 +78,13 @@ $ad-inout-duration: 3.5s;
 
   $position-main: $position-main + 2.5s;
   //3-2-1 loop
-  /* @include make-anim("frame-c-1", scaleInAndOut2500, $ad-inout-duration, $position-main);
-  $position-main: $position-main + 0.2;
+  /* @include make-anim("frame-bkg-1", fadeInAndScale5500, 5.5s, $position-main);
+  @include make-anim("frame-verbrauch", fadeIn, $ad-std-duration, $position-main);
+  $position-main: 0.2s;
+  @include make-anim("frame-c-1", scaleInAndOut2500, $ad-inout-duration, $position-main);
+  $position-main: $position-main + 0.2s;
   @include make-anim("frame-ePower", scaleInAndOut2500, $ad-inout-duration, $position-main);
-  $position-main: $position-main + 0.5;
+  $position-main: $position-main + 0.5s;
   @include make-anim("frame-cta", fromRight, $ad-std-duration, $position-main);
   $position-main: $position-main + $ad-std-delay;
   @include make-anim("frame-c-2", fromRight, $ad-std-duration, $position-main);

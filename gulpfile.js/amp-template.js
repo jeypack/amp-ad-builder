@@ -27,25 +27,26 @@ let config = {
   HTDOCS_PATH: "/Applications/MAMP/htdocs/",
   //AD_CLIENT: 'peugeot_de_',
   AD_CLIENT: "nissan_united_at_",
+  //config.AD_CURRENT_INSIDE_INDEX
   AD_VERSION_DATE: [
-    ["V02_230113", "V01_230113", "V01_230113", "V01_230113"],
-    ["V01_230113", "V01_230113", "V01_230113", "V01_230113"],
-    ["V01_230113", "V01_230113", "V01_230113", "V01_230113"],
+    ["V03_230113", "V01_230113", "V01_230113"],
+    ["V02_230113", "V01_230113", "V01_230113"],
+    ["V02_230113", "V01_230113", "V01_230113"],
   ],
   AD_SIZES: [
     ["300x250", "160x600", "728x90", "800x250"],
     ["300x250", "160x600", "728x90", "800x250"],
     ["300x250", "160x600", "728x90", "800x250"],
   ],
-  //AD_SIZES: ['800x250'],
-  AD_CURRENT_INDEX: 0,
-  AD_CURRENT_INSIDE_INDEX: 0,
+  //used for AD_FLIGHTS && AD_NAMES
+  AD_CURRENT_INDEX: 1,
+  AD_CURRENT_INSIDE_INDEX: 2,
   AD_FORMATS: [
     ["MR", "WS", "SB", "BB"],
     ["MR", "WS", "SB", "BB"],
     ["MR", "WS", "SB", "BB"],
   ],
-  //AD_FORMATS: ['BB'],
+  //AD_CURRENT_INDEX
   AD_FLIGHTS: ["flight_2023_01_", "flight_2023_01_", "flight_2023_01_"],
   AD_NAMES: ["RTU-HB-XTrail", "RTU-HB-QQ", "RTU-HB-JUKE"],
   SRC_PATH_MAIN: "./src/",
@@ -78,7 +79,7 @@ const resetIndex = (cb) => {
 const nextIndex = (cb) => {
   const names = config.AD_NAMES;
   const length = names.length;
-  const insideLength = config.AD_SIZES[config.AD_CURRENT_INDEX][config.AD_CURRENT_INDEX].length;
+  const insideLength = config.AD_VERSION_DATE[0].length;
   const nextIndex = config.AD_CURRENT_INDEX + 1;
   const nextInsideIndex = config.AD_CURRENT_INSIDE_INDEX + 1;
   if (nextInsideIndex < insideLength) {
@@ -93,6 +94,8 @@ const nextIndex = (cb) => {
       cb();
     }
   }
+  console.log(config.AD_VERSION_DATE[config.AD_CURRENT_INDEX][0]);
+  console.log("length:", length, "insideLength:", insideLength, "nextIndex:", nextIndex, "nextInsideIndex:", nextInsideIndex);
   cb();
 };
 
@@ -111,6 +114,7 @@ const setBuildName = (cb) => {
   //"_HTML5_#_AMP_"
   const namePart = "_HTML5_" + flight + name + "_AMP_";
   config.BUILD_NAME = config.AD_CLIENT + format + namePart + size + version;
+  console.log("BUILD_NAME:", config.BUILD_NAME);
   cb();
 };
 // temp
@@ -123,14 +127,6 @@ const cleanDirectoryAll = (cb) => {
 
 const cleanDirectory = (cb) => {
   //del.bind(null, config.DEVELOPMENT ? [config.DEV_FOLDER + '**'] : [config.BUILD_FOLDER + '**']);
-  /* del.sync(
-    config.DEVELOPMENT
-      ? [config.DEV_FOLDER + config.BUILD_NAME + "/**"]
-      : [config.BUILD_FOLDER + config.BUILD_NAME + "/**"],
-    {
-      force: true,
-    }
-  ); */
   if (!config.DEVELOPMENT) {
     del.sync([config.BUILD_FOLDER + config.BUILD_NAME + "/**"], {
       force: true,
@@ -140,6 +136,7 @@ const cleanDirectory = (cb) => {
   del.sync([config.DEV_FOLDER + "**"], {
     force: true,
   });
+  //remove .css files out of src files!
   del.sync([config.SRC_PATH_MAIN + "**/*.css"], {
     force: true,
   });
@@ -153,6 +150,7 @@ const moveAssets = (cb) => {
 
 //Helper
 const createSassCss = (sources) => {
+  const destination = config.DEV_FOLDER + config.BUILD_NAME;
   //const output = config.DEVELOPMENT ? 'expanded' : 'compressed';
   const processors = [
     //autoprefixer,
@@ -172,7 +170,7 @@ const createSassCss = (sources) => {
       )
       .pipe(postcss(processors))
       .pipe(rename("index." + UID + ".css"))
-      .pipe(dest(config.SRC_PATH + "scss/"))
+      .pipe(dest(destination + "/"))
       .pipe(
         reload({
           stream: true,
@@ -194,7 +192,7 @@ const createSassCss = (sources) => {
     //.pipe(dest(config.SRC_PATH + "scss/"))
     .pipe(cssnano({ safe: true }))
     .pipe(rename("index.min.css"))
-    .pipe(dest(config.SRC_PATH + "scss/"))
+    .pipe(dest(destination + "/"))
     .pipe(
       reload({
         stream: true,
@@ -266,13 +264,23 @@ const buildTask = series(
   resetIndex, // 0
   combinedTaskBuild,
   nextIndex, // 1
-  combinedTaskBuild
-  /* nextIndex, // 2
+  combinedTaskBuild,
+  nextIndex, // 2
   combinedTaskBuild,
   nextIndex, // 3
-  combinedTaskBuild */
+  combinedTaskBuild,
+  nextIndex, // 4
+  combinedTaskBuild,
+  nextIndex, // 5
+  combinedTaskBuild,
+  nextIndex, // 6
+  combinedTaskBuild,
+  nextIndex, // 7
+  combinedTaskBuild,
+  nextIndex, // 8
+  combinedTaskBuild
 );
 
-exports.default = series(combinedTaskDev, watchDirectory);
+exports.default = series(combinedTaskBuild, combinedTaskDev, watchDirectory);
 exports.build = buildTask;
 //exports.clean = series(enableDevelopment, cleanDirectoryAll, enableProduction, cleanDirectoryAll);
