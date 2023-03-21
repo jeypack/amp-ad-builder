@@ -2,7 +2,7 @@
 
 >An AMP builder tool for creating css styled keyframe animations via scss mixins.
 
-[Author](joerg.pfeifer@geplusww.com) Jörg Pfeifer 17.01.2023
+[Author](joerg.pfeifer@geplusww.com) Jörg Pfeifer 21.03.2023
 
 ### `Installation`
 

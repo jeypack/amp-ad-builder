@@ -1,6 +1,6 @@
 {
   "name": "egp-amp-ads",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "AMP Banner Style EG+",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,8 @@
     "autoprefixer": "^9.0.0",
     "browser-sync": "^2.27.5",
     "del": "^6.0.0",
+    "filesize": "^6.0.1",
+    "fs": "0.0.1-security",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-css-base64": "^2.0.0",
@@ -41,7 +43,8 @@
     "through2": "^3.0.2",
     "uglify-save-license": "^0.4.1",
     "uuid": "^8.3.2",
-    "zip-local": "^0.3.4"
+    "zip-local": "^0.3.4",
+    "puppeteer": "^10.4.0"
   },
   "browserslist": [
     "> 1%",

@@ -18,50 +18,11 @@ const del = require("del");
 const { v4: uuidv4 } = require("uuid");
 //config.UID = uuidv4();
 const zipper = require("./gulp-zipper");
-
+const capture = require("./gulp-capture-website");
+//const { config } = require("./amp/config-unplugged-weeks");
+const { config } = require("./amp/config-ASTARA-RRG-Glattpark");
 //config.DEV_FOLDER
-let config = {
-  UID: 0,
-  DEVELOPMENT: true,
-  //PATH_INCLUDES_SASS: ['bower_components/juiced/sass/'],
-  PATH_INCLUDES_SASS: [],
-  HTDOCS_PATH: "/Applications/MAMP/htdocs/",
-  //AD_CLIENT: 'peugeot_de_',
-  AD_CLIENT: "nissan_united_at_",
-  AD_CAMPAIGN: "RTU-HB",
-  //config.AD_CURRENT_INSIDE_INDEX
-  AD_VERSION_DATE: [
-    ["V03_230113", "V01_230113", "V01_230113"],
-    ["V02_230113", "V01_230113", "V02_230113"],
-    ["V02_230113", "V01_230113", "V02_230113"],
-  ],
-  AD_SIZES: [
-    ["300x250", "160x600", "728x90", "800x250"],
-    ["300x250", "160x600", "728x90", "800x250"],
-    ["300x250", "160x600", "728x90", "800x250"],
-  ],
-  //used for AD_FLIGHTS && AD_NAMES
-  AD_CURRENT_INDEX: 1,
-  AD_CURRENT_INSIDE_INDEX: 2,
-  AD_FORMATS: [
-    ["MR", "WS", "SB", "BB"],
-    ["MR", "WS", "SB", "BB"],
-    ["MR", "WS", "SB", "BB"],
-  ],
-  //AD_CURRENT_INDEX
-  AD_FLIGHTS: ["flight_2023_01_", "flight_2023_01_", "flight_2023_01_"],
-  AD_NAMES: ["RTU-HB-XTrail", "RTU-HB-QQ", "RTU-HB-JUKE"],
-  AD_PREFIX: ["NAT_AMP_", "NAT_AMP_", "NAT_AMP_"],
-  AD_SUFFIX: ["", "", ""],
-  SRC_PATH_MAIN: "./src/",
-  //scr path will be defined inside 'setSrcPath'
-  SRC_PATH: "",
-  SRC_VENDOR: "./src/vendor/",
-  DEV_FOLDER: "./_temp/",
-  BUILD_FOLDER: "./_build/",
-  BUILD_NAME: "",
-  AMP_TEST: "#development=amp4ads",
-};
+
 //XXXXX FIRMA XXXXX<br>XXXXX MUSTERSTRASSE XXXXX<br>XXXXX MUSTERSTADT XXXXX<br>XXXX TEL.-NR. XXXX
 //nissan_united_de_BB_HTML5_flight_2021_07_QQ_Digital_RTU_Update_800x250V01_210730
 const enableDevelopment = (cb) => {
@@ -126,16 +87,47 @@ const setBuildName = (cb) => {
 };
 
 // ++++++
-// temp +
+const captureAd = () => {
+  return capture.make({
+    defaultWhiteBackground: true,
+    dest: config.BUILD_FOLDER + "fallbacks/",
+    root: config.BUILD_FOLDER,
+    delay: 1,
+    streamType: "jpeg",
+    // takes ads folder name as filename
+    basePathNames: true,
+    insideFallbackFolder: true,
+    // write image to ad folder or if false inside fallbacks folder
+    insideFolder: false,
+    getSizeFromFolderName: true,
+    filename: "fallback", // is only used if 'basePathNames' is false or undefined
+    autoQuality: true,
+    quality: 80,
+  });
+};
+
+const fallbacksFromDest = (cb) => {
+  return src(config.BUILD_FOLDER + "*/index.html").pipe(captureAd());
+};
+
 const zip = (cb) => {
   const prefix = config.AD_PREFIX[config.AD_CURRENT_INDEX];
   const suffix = config.AD_SUFFIX[config.AD_CURRENT_INDEX];
-  let stream = src([config.BUILD_FOLDER + "*", "!" + config.BUILD_FOLDER + "zip"]);
-  return stream.pipe(zipper({ destination: config.BUILD_FOLDER + "zip/", campaign: config.AD_CAMPAIGN, prefix: prefix, suffix: suffix }));
+  //let stream = src([config.BUILD_FOLDER + "*", "!" + config.BUILD_FOLDER + "zip"]);
+  return src([config.BUILD_FOLDER + "*", "!" + config.BUILD_FOLDER + "zip"]).pipe(
+    zipper({ destination: config.BUILD_FOLDER + "zip/", campaign: config.AD_CAMPAIGN, prefix: prefix, suffix: suffix })
+  );
 };
 
 const cleanDirectoryAll = (cb) => {
   del.sync(config.DEVELOPMENT ? [config.DEV_FOLDER + "**"] : [config.BUILD_FOLDER + "**"], {
+    force: true,
+  });
+  cb();
+};
+
+const cleanDirectoryBuild = (cb) => {
+  del.sync([config.BUILD_FOLDER + "**"], {
     force: true,
   });
   cb();
@@ -174,24 +166,27 @@ const createSassCss = (sources) => {
   ];
   if (config.DEVELOPMENT) {
     const UID = uuidv4();
-    return src(sources)
-      .pipe(
-        sass
-          .sync({
-            outputStyle: "expanded",
-            precision: 10,
-            includePaths: [],
+    return (
+      src(sources)
+        .pipe(
+          sass
+            .sync({
+              outputStyle: "expanded",
+              precision: 10,
+              includePaths: [],
+            })
+            .on("error", sass.logError)
+        )
+        .pipe(postcss(processors))
+        //.pipe(rename("index." + UID + ".css"))
+        .pipe(rename("index.min.css"))
+        .pipe(dest(destination + "/"))
+        .pipe(
+          reload({
+            stream: true,
           })
-          .on("error", sass.logError)
-      )
-      .pipe(postcss(processors))
-      .pipe(rename("index." + UID + ".css"))
-      .pipe(dest(destination + "/"))
-      .pipe(
-        reload({
-          stream: true,
-        })
-      );
+        )
+    );
   }
   return (
     src(sources)
@@ -279,11 +274,12 @@ const combinedTaskDev = series(setSrcPath, setBuildName, enableDevelopment, clea
 const combinedTaskBuild = series(setSrcPath, setBuildName, enableProduction, cleanDirectory, moveAssets, buildHtml);
 
 const buildTask = series(
+  cleanDirectoryBuild,
   resetIndex, // 0
   combinedTaskBuild,
   nextIndex, // 1
   combinedTaskBuild,
-  nextIndex, // 2
+  /* nextIndex, // 2
   combinedTaskBuild,
   nextIndex, // 3
   combinedTaskBuild,
@@ -296,7 +292,8 @@ const buildTask = series(
   nextIndex, // 7
   combinedTaskBuild,
   nextIndex, // 8
-  combinedTaskBuild,
+  combinedTaskBuild, */
+  fallbacksFromDest,
   zip
 );
 

@@ -29,14 +29,18 @@ const createDirectory = (dir, cb) => {
 
 //nissan_united_at_MR_HTML5_flight_2023_01_RTU-HB-JUKE_AMP_300x250V02_230113
 const parseBase = (basename) => {
+  //console.log("gulp-zipper parseBase", "basename:", basename);
   const chunk1 = basename.split("HTML5");
-  const chunk2 = chunk1[0].split("_");
+  //console.log("gulp-zipper parseBase", "chunk1:", chunk1);
+  if (chunk1.length === 1) {
+    return { name: "fallbacks" };
+  }
+  //const chunk2 = chunk1[0].split("_");
   const chunk3 = chunk1[1].split("_");
   const sizeParts = chunk3.slice(-2)[0].split("V");
   const name = chunk3[4];
   const size = sizeParts[0];
   const version = sizeParts[1];
-  //console.log("parseBase", "chunk1:", chunk1);
   //console.log("parseBase", "chunk2.slice(0, -2):", chunk2.slice(0, -2));
   //console.log("parseBase", "chunk3:", chunk3);
   /* console.log("parseBase", "name:", name);
@@ -53,7 +57,7 @@ const parseBase = (basename) => {
 // https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/README.md
 module.exports = (opts, callback) => {
   let destination = opts.destination;
-  //console.log('gulp-zipper module.exports destination:', destination);
+  console.log("gulp-zipper module.exports destination:", destination);
 
   //
   let countFiles = 0,
@@ -62,16 +66,18 @@ module.exports = (opts, callback) => {
       let that = this,
         //isDirectory = file.isNull(),
         parseObj = path.parse(file.path),
-        handle = function (f, p) {
-          //console.log('gulp-zipper handle:', p.base);
-          if (f) {
-            that.push(f);
-          }
-          if (callback) {
-            callback(f, destination, p ? " saved successfully !" : "save failed !");
-          }
-          next();
-        };
+        baseObj = parseBase(parseObj.base);
+      console.log("zip handleFile", "baseObj:", baseObj);
+      handle = function (f, p) {
+        console.log("gulp-zipper handle:", p.base);
+        if (f) {
+          that.push(f);
+        }
+        if (callback) {
+          callback(f, destination, p ? " saved successfully !" : "save failed !");
+        }
+        next();
+      };
       //console.log('gulp-zipper file', 'dir:', isDirectory, 'root:', parseObj.root, 'base:', parseObj.base, 'name:', parseObj.name, 'ext:', parseObj.ext);
       if (file.isStream()) {
         that.emit("error", new PluginError("gulp-zipper", { message: "Streaming not supported" }));
@@ -79,9 +85,10 @@ module.exports = (opts, callback) => {
         return next();
       }
 
-      //console.log('gulp-zipper handleFile', 'file:', file, 'countFiles:', countFiles);
       // create directory even if it does not exists
       createDirectory(destination, (err) => {
+        //console.log("gulp-zipper createDirectory", "err:", err);
+        console.log("gulp-zipper createDirectory", "file:", file, "countFiles:", countFiles);
         if (!err) {
           // try zipping a file
           try {
@@ -91,9 +98,16 @@ module.exports = (opts, callback) => {
                 zipped.compress();
                 // get the zipped file as a Buffer
                 //let buff = zipped.memory();
-                const baseObj = parseBase(parseObj.base);
-                const dest = destination + opts.prefix + baseObj.name + opts.suffix + "_" + baseObj.size + "_" + baseObj.version;
-                //console.log("zip", "dest:", dest);
+                //const baseObj = parseBase(parseObj.base);
+                //console.log("zip", "baseObj:", baseObj);
+                let dest = "";
+                if (baseObj.size) {
+                  dest = destination + opts.prefix + baseObj.name + opts.suffix + "_" + baseObj.size + "_" + baseObj.version;
+                } else {
+                  //FALLBACKS
+                  dest = destination + baseObj.name;
+                }
+                console.log("zip", "dest:", dest);
                 // or save the zipped file to disk
                 zipped.save(dest + ".zip", function (error) {
                   if (!error) {
@@ -114,6 +128,7 @@ module.exports = (opts, callback) => {
           return next();
         }
       });
+
     };
 
   // processing non-binary streams
