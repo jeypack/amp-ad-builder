@@ -9,30 +9,32 @@ const config = {
   //AD_CLIENT: 'peugeot_de_',
   //AD_CLIENT: "nissan_united_ch_",
   AD_CLIENT: "astara_nissan_ch_",
-  AD_CAMPAIGN: "ASTARA_Unplugged-Weeks",
+  AD_CAMPAIGN: "ASTARA-Crosscarline-QQ",
   //config.AD_CURRENT_INSIDE_INDEX
   /// Used for build (inside length)
   AD_VERSION_DATE: [
-    ["V05_230217", "V04_230217"],
-    ["V04_230217", "V04_230217"],
-    ["V04_230217", "V04_230217"],
+    ["V01_230502", "V01_230502", "V01_230502"],
+    ["V01_230502", "V01_230502", "V01_230502"],
+    ["V01_230502", "V01_230502", "V01_230502"],
   ],
   AD_SIZES: [
-    ["300x250", "728x90", "160x600", "800x250"],
-    ["300x250", "728x90", "160x600", "800x250"],
-    ["300x250", "728x90", "160x600", "800x250"],
+    ["300x250", "728x90", "160x600"],
+    ["300x250", "728x90", "160x600"],
+    ["300x250", "728x90", "160x600"],
   ],
   //used for AD_FLIGHTS && AD_NAMES
-  AD_CURRENT_INDEX: 2,
-  AD_CURRENT_INSIDE_INDEX: 1,
+  AD_CURRENT_INDEX: 0,
+  // next format
+  AD_CURRENT_INSIDE_INDEX: 2,
   AD_FORMATS: [
-    ["MR", "SB", "WS", "BB"],
-    ["MR", "SB", "WS", "BB"],
-    ["MR", "SB", "WS", "BB"],
+    ["MR", "SB", "WS"],
+    ["MR", "SB", "WS"],
+    ["MR", "SB", "WS"],
   ],
   //AD_CURRENT_INDEX
-  AD_FLIGHTS: ["flight_2023_02_", "flight_2023_02_", "flight_2023_02_"],
-  AD_NAMES: ["ASTARA_Unplugged-Weeks_DE", "ASTARA_Unplugged-Weeks_FR", "ASTARA_Unplugged-Weeks_IT"],
+  //AD_FLIGHTS: ["flight_2023_05_", "flight_2023_05_", "flight_2023_05_"],
+  AD_FLIGHTS: ["web_2023_05_", "web_2023_05_", "web_2023_05_"],
+  AD_NAMES: ["ASTARA-CC_Dealer_QQ_DE", "ASTARA-CC_Dealer_QQ_FR", "ASTARA-CC_Dealer_QQ_IT"],
   AD_PREFIX: ["NCH_AMP_", "NCH_AMP_", "NCH_AMP_"],
   AD_SUFFIX: ["", "", ""],
   SRC_PATH_MAIN: "./src/",

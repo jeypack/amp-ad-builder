@@ -20,7 +20,8 @@ const { v4: uuidv4 } = require("uuid");
 const zipper = require("./gulp-zipper");
 const capture = require("./gulp-capture-website");
 //const { config } = require("./amp/config-unplugged-weeks");
-const { config } = require("./amp/config-ASTARA-RRG-Glattpark");
+//const { config } = require("./amp/config-ASTARA-RRG-Glattpark");
+const { config } = require("./amp/config-ASTARA-CC-Dealer-QQ");
 //config.DEV_FOLDER
 
 //XXXXX FIRMA XXXXX<br>XXXXX MUSTERSTRASSE XXXXX<br>XXXXX MUSTERSTADT XXXXX<br>XXXX TEL.-NR. XXXX
@@ -77,7 +78,7 @@ const setBuildName = (cb) => {
   const format = config.AD_FORMATS[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
   const version = config.AD_VERSION_DATE[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
   //"_HTML5_#_AMP_"
-  const namePart = "_HTML5_" + flight + name + "_AMP_";
+  const namePart = "_HTML5_" + flight + name + "_";
   config.BUILD_NAME = config.AD_CLIENT + format + namePart + size + version;
   /* const prefix = config.AD_PREFIX[config.AD_CURRENT_INDEX];
   const suffix = config.AD_SUFFIX[config.AD_CURRENT_INDEX];
@@ -264,9 +265,10 @@ const watchDirectory = (cb) => {
   //gulp.watch("./build/**/*.html").on("change", handleChange);
   //watch([config.SRC_PATH + 'js/*.js', '!' + config.SRC_PATH + 'js/*.min.js'], buildHtml);
   watch(config.SRC_PATH + "img/**", series(moveAssets, buildHtml));
-  watch("./src/scss/*.scss", buildHtml);
-  watch(config.SRC_PATH + "scss/*.scss", buildHtml);
-  watch(config.SRC_PATH + "index.html", buildHtml);
+  watch("./src/**", buildHtml);
+  //watch("./src/scss/*.scss", buildHtml);
+  //watch(config.SRC_PATH + "scss/*.scss", buildHtml);
+  //watch(config.SRC_PATH + "index.html", buildHtml);
   cb();
 };
 
@@ -275,13 +277,13 @@ const combinedTaskBuild = series(setSrcPath, setBuildName, enableProduction, cle
 
 const buildTask = series(
   cleanDirectoryBuild,
-  resetIndex, // 0
+  resetIndex, // 0-0
   combinedTaskBuild,
-  nextIndex, // 1
+  nextIndex, // 0-1
   combinedTaskBuild,
-  /* nextIndex, // 2
+  nextIndex, // 0-2
   combinedTaskBuild,
-  nextIndex, // 3
+  /* nextIndex, // 3
   combinedTaskBuild,
   nextIndex, // 4
   combinedTaskBuild,

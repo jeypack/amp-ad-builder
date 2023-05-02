@@ -7,8 +7,9 @@ const config = {
   PATH_INCLUDES_SASS: [],
   HTDOCS_PATH: "/Applications/MAMP/htdocs/",
   //AD_CLIENT: 'peugeot_de_',
-  AD_CLIENT: "nissan_united_ch_",
-  AD_CAMPAIGN: "ASTARA-RRG-Glattpark",
+  //AD_CLIENT: "nissan_united_ch_",
+  AD_CLIENT: "astara_nissan_ch_",
+  AD_CAMPAIGN: "ASTARA_RRG_Glattpark",
   //config.AD_CURRENT_INSIDE_INDEX
   /// Used for build (inside length)
   AD_VERSION_DATE: [
@@ -32,7 +33,7 @@ const config = {
   ],
   //AD_CURRENT_INDEX
   AD_FLIGHTS: ["flight_2023_03_", "flight_2023_03_", "flight_2023_03_"],
-  AD_NAMES: ["ASTARA-RRG-Glattpark-DE", "ASTARA-RRG-Glattpark-FR", "ASTARA-RRG-Glattpark-IT"],
+  AD_NAMES: ["ASTARA_RRG_Glattpark_DE", "ASTARA_RRG_Glattpark_FR", "ASTARA_RRG_Glattpark_IT"],
   AD_PREFIX: ["NCH_AMP_", "NCH_AMP_", "NCH_AMP_"],
   AD_SUFFIX: ["", "", ""],
   SRC_PATH_MAIN: "./src/",
