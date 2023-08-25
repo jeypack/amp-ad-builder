@@ -13,7 +13,7 @@ const config = {
   //config.AD_CURRENT_INSIDE_INDEX
   /// Used for build (inside length)
   AD_VERSION_DATE: [
-    ["V01_230502", "V01_230502", "V01_230502"],
+    ["V05_230502", "V02_230502", "V02_230502"],
     ["V01_230502", "V01_230502", "V01_230502"],
     ["V01_230502", "V01_230502", "V01_230502"],
   ],
@@ -25,7 +25,7 @@ const config = {
   //used for AD_FLIGHTS && AD_NAMES
   AD_CURRENT_INDEX: 0,
   // next format
-  AD_CURRENT_INSIDE_INDEX: 2,
+  AD_CURRENT_INSIDE_INDEX: 0,
   AD_FORMATS: [
     ["MR", "SB", "WS"],
     ["MR", "SB", "WS"],
@@ -35,7 +35,7 @@ const config = {
   //AD_FLIGHTS: ["flight_2023_05_", "flight_2023_05_", "flight_2023_05_"],
   AD_FLIGHTS: ["web_2023_05_", "web_2023_05_", "web_2023_05_"],
   AD_NAMES: ["ASTARA-CC_Dealer_QQ_DE", "ASTARA-CC_Dealer_QQ_FR", "ASTARA-CC_Dealer_QQ_IT"],
-  AD_PREFIX: ["NCH_AMP_", "NCH_AMP_", "NCH_AMP_"],
+  AD_PREFIX: ["NCH_AMP_CC_", "NCH_AMP_CC_", "NCH_AMP_CC_"],
   AD_SUFFIX: ["", "", ""],
   SRC_PATH_MAIN: "./src/",
   //scr path will be defined inside 'setSrcPath'

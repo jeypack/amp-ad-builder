@@ -195,7 +195,7 @@ exports.make = (opt) => {
       /* await page.waitForTimeout(12000).then(() => {
         console.log('Before Screenshot!')
       }); */
-      await page.waitForTimeout(20000);
+      await page.waitForTimeout(opt.delay);
 
       await page.screenshot({
         path: destPath,

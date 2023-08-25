@@ -5,9 +5,29 @@
 //@include make-keyframe(inAndOut2500, 1.0s, 2.5s, 0.8s);
 // make-keyframe($name, $duration-in: 0.6s, $duration-to: 2.0s, $duration-out: 0.6s, $transform-in: translateX(0%), $transform-to: translateX(0%), $transform-out: translateX(0%), $opacity-in: 0, $opacity-to: 1, $opacity-out: 0)
 // (!!!) $duration-total: $duration-to + $duration-out;
-@include make-keyframe(inAndOut35, 0.6s, 3.5s, 0.6s);
-@include make-keyframe(inAndOut48, 0.8s, 4s, 0.8s);
+@include make-keyframe(inAndOut2, 0.6s, 2.0s, 0.6s);
+@include make-keyframe(inAndOut3, 0.6s, 3.0s, 0.6s);
 //animation: name, duration, timing-function, delay, iteration-count, direction, fill-mode, play-state (running/paused)
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.0);
+  }
+}
+@keyframes zoomOut {
+  0% {
+    opacity: 1;
+    transform: scale(1.0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -27,9 +47,9 @@
  @keyframes clickCta {
   0% {
     opacity: 0;
-    transform: translateX(0) scale(1);
+    transform: translateX(0) scale(0.9);
   }
-  45% {
+  15% {
     opacity: 1;
     transform: translateX(0%) scale(1);
   }
@@ -37,13 +57,13 @@
     opacity: 1;
     transform: translateX(0%) scale(1);
   }
-  70% {
-    opacity: 1;
-    transform: translateX(0%) scale(0.9);
-  }
-  95% {
+  88% {
     opacity: 1;
     transform: translateX(0%) scale(1);
+  }
+  92% {
+    opacity: 1;
+    transform: translateX(0%) scale(0.9);
   }
   100% {
     opacity: 1;

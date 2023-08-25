@@ -21,7 +21,13 @@ const zipper = require("./gulp-zipper");
 const capture = require("./gulp-capture-website");
 //const { config } = require("./amp/config-unplugged-weeks");
 //const { config } = require("./amp/config-ASTARA-RRG-Glattpark");
-const { config } = require("./amp/config-ASTARA-CC-Dealer-QQ");
+//const { config } = require("./amp/config-ASTARA-CC-Dealer-ARIYA");
+//const { config } = require("./amp/config-ASTARA-CC-Dealer-JUKE");
+//const { config } = require("./amp/config-ASTARA-CC-Dealer-QQ");
+//const { config } = require("./amp/config-ASTARA-CC-Dealer-XTRAIL");
+//const { config } = require("./amp/config-NISSAN-QQ-Dealer-STD");
+const { config } = require("./amp/config-NISSAN-QQ-Dealer-BERLIN");
+
 //config.DEV_FOLDER
 
 //XXXXX FIRMA XXXXX<br>XXXXX MUSTERSTRASSE XXXXX<br>XXXXX MUSTERSTADT XXXXX<br>XXXX TEL.-NR. XXXX
@@ -71,7 +77,7 @@ const setSrcPath = (cb) => {
   cb();
 };
 
-const setBuildName = (cb) => {
+const setDevName = (cb) => {
   const flight = config.AD_FLIGHTS[config.AD_CURRENT_INDEX];
   const name = config.AD_NAMES[config.AD_CURRENT_INDEX];
   const size = config.AD_SIZES[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
@@ -87,13 +93,26 @@ const setBuildName = (cb) => {
   cb();
 };
 
+const setBuildName = (cb) => {
+  //const flight = config.AD_FLIGHTS[config.AD_CURRENT_INDEX];
+  const name = config.AD_NAMES[config.AD_CURRENT_INDEX];
+  const size = config.AD_SIZES[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
+  //const format = config.AD_FORMATS[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
+  //const version = config.AD_VERSION_DATE[config.AD_CURRENT_INDEX][config.AD_CURRENT_INSIDE_INDEX];
+  const prefix = config.AD_PREFIX[config.AD_CURRENT_INDEX];
+  const suffix = config.AD_SUFFIX[config.AD_CURRENT_INDEX];
+  config.BUILD_NAME = prefix + name + suffix + "_" + size;
+  console.log("BUILD_NAME:", config.BUILD_NAME);
+  cb();
+};
+
 // ++++++
 const captureAd = () => {
   return capture.make({
     defaultWhiteBackground: true,
     dest: config.BUILD_FOLDER + "fallbacks/",
     root: config.BUILD_FOLDER,
-    delay: 1,
+    delay: 5000,
     streamType: "jpeg",
     // takes ads folder name as filename
     basePathNames: true,
@@ -272,29 +291,23 @@ const watchDirectory = (cb) => {
   cb();
 };
 
-const combinedTaskDev = series(setSrcPath, setBuildName, enableDevelopment, cleanDirectory, moveAssets, buildHtml);
+const combinedTaskDev = series(setSrcPath, setDevName, enableDevelopment, cleanDirectory, moveAssets, buildHtml);
 const combinedTaskBuild = series(setSrcPath, setBuildName, enableProduction, cleanDirectory, moveAssets, buildHtml);
+const combinedTask = series(combinedTaskBuild, nextIndex);
 
 const buildTask = series(
   cleanDirectoryBuild,
   resetIndex, // 0-0
-  combinedTaskBuild,
-  nextIndex, // 0-1
-  combinedTaskBuild,
-  nextIndex, // 0-2
-  combinedTaskBuild,
-  /* nextIndex, // 3
-  combinedTaskBuild,
-  nextIndex, // 4
-  combinedTaskBuild,
-  nextIndex, // 5
-  combinedTaskBuild,
-  nextIndex, // 6
-  combinedTaskBuild,
-  nextIndex, // 7
-  combinedTaskBuild,
-  nextIndex, // 8
-  combinedTaskBuild, */
+  //Model
+  combinedTask, // DE-1
+  combinedTask, // DE-2
+  combinedTask, // DE-3
+  combinedTask, // FR-1
+  combinedTask, // FR-2
+  combinedTask, // FR-3
+  combinedTask, // IT-1
+  combinedTask, // IT-2
+  combinedTask, // IT-3
   fallbacksFromDest,
   zip
 );
