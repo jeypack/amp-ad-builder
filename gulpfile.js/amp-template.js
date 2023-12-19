@@ -26,7 +26,8 @@ const capture = require("./gulp-capture-website");
 //const { config } = require("./amp/config-ASTARA-CC-Dealer-QQ");
 //const { config } = require("./amp/config-ASTARA-CC-Dealer-XTRAIL");
 //const { config } = require("./amp/config-NISSAN-QQ-Dealer-STD");
-const { config } = require("./amp/config-NISSAN-QQ-Dealer-BERLIN");
+//const { config } = require("./amp/config-NISSAN-QQ-Dealer-BERLIN");
+const { config } = require("./amp/config-ASTARA-Winter-Dealer-ARIYA-XTRAIL");
 
 //config.DEV_FOLDER
 
