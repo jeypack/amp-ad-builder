@@ -13,9 +13,9 @@ const config = {
   //config.AD_CURRENT_INSIDE_INDEX
   /// Used for build (inside length)
   AD_VERSION_DATE: [
-    ["V01_231218", "V01_231218", "V01_231218"],
-    ["V01_231218", "V01_231218", "V01_231218"],
-    ["V01_231218", "V01_231218", "V01_231218"],
+    ["V02_231218", "V01_231218", "V01_231218"],
+    ["V03_231218", "V01_231218", "V01_231218"],
+    ["V02_231218", "V01_231218", "V01_231218"],
   ],
   AD_SIZES: [
     ["300x250", "728x90", "160x600"],
@@ -23,7 +23,7 @@ const config = {
     ["300x250", "728x90", "160x600"],
   ],
   //used for AD_FLIGHTS && AD_NAMES
-  AD_CURRENT_INDEX: 2,
+  AD_CURRENT_INDEX: 0,
   // next format
   AD_CURRENT_INSIDE_INDEX: 0,
   AD_FORMATS: [
