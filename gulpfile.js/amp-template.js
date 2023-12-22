@@ -113,7 +113,7 @@ const captureAd = () => {
     defaultWhiteBackground: true,
     dest: config.BUILD_FOLDER + "fallbacks/",
     root: config.BUILD_FOLDER,
-    delay: 5000,
+    delay: 12000,
     streamType: "jpeg",
     // takes ads folder name as filename
     basePathNames: true,
@@ -136,7 +136,26 @@ const zip = (cb) => {
   const suffix = config.AD_SUFFIX[config.AD_CURRENT_INDEX];
   //let stream = src([config.BUILD_FOLDER + "*", "!" + config.BUILD_FOLDER + "zip"]);
   return src([config.BUILD_FOLDER + "*", "!" + config.BUILD_FOLDER + "zip"]).pipe(
-    zipper({ destination: config.BUILD_FOLDER + "zip/", campaign: config.AD_CAMPAIGN, prefix: prefix, suffix: suffix })
+    zipper({
+      destination: config.BUILD_FOLDER + "zip/",
+      campaign: config.AD_CAMPAIGN,
+      prefix: prefix,
+      suffix: suffix,
+      ////NCH_AMP_Dealer-Winter_ARIYA-XTRAIL_FR_160x600
+      parseBase: (basename) => {
+        console.log("zip parseBase", "basename:", basename);
+        const chunk1 = basename.split("_AMP_");
+        //console.log("zip parseBase", "chunk1:", chunk1);
+        if (chunk1.length === 1) {
+          return { name: "fallbacks" };
+        }
+        const chunk2 = chunk1[1].split("_");
+        return {
+          name: chunk1[1],
+          size: chunk2.pop(),
+        };
+      },
+    })
   );
 };
 
@@ -162,9 +181,9 @@ const cleanDirectory = (cb) => {
     });
   }
   //clean _temp folder every time!!!
-  del.sync([config.DEV_FOLDER + "**"], {
+  /* del.sync([config.DEV_FOLDER + "**"], {
     force: true,
-  });
+  }); */
   //remove .css files out of src files!
   del.sync([config.SRC_PATH_MAIN + "**/*.css"], {
     force: true,
@@ -294,6 +313,7 @@ const watchDirectory = (cb) => {
 
 const combinedTaskDev = series(setSrcPath, setDevName, enableDevelopment, cleanDirectory, moveAssets, buildHtml);
 const combinedTaskBuild = series(setSrcPath, setBuildName, enableProduction, cleanDirectory, moveAssets, buildHtml);
+//const combinedTask = series(combinedTaskBuild, combinedTaskDev, nextIndex);
 const combinedTask = series(combinedTaskBuild, nextIndex);
 
 const buildTask = series(

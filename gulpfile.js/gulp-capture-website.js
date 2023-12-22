@@ -171,7 +171,10 @@ exports.make = (opt) => {
 
     //this.emit('error', new PluginError('gulp-capture-website', err));
     const capture = async () => {
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({
+        executablePath: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        headless: true,
+      });
       const page = await browser.newPage();
       await page.setViewport({
         width: opt.screenSize.width,
@@ -182,7 +185,8 @@ exports.make = (opt) => {
       await page.goto("file:///" + file.path + "?egpfallback=1", {
         //load"|"domcontentloaded"|"networkidle0"|"networkidle2
         //waitUntil: 'domcontentloaded',
-        waitUntil: "load",
+        //waitUntil: "load",
+        waitUntil: "networkidle2",
       });
 
       //await page.waitForTimeout(500);

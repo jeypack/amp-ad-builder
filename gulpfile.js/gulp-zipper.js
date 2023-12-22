@@ -28,28 +28,19 @@ const createDirectory = (dir, cb) => {
 };
 
 //nissan_united_at_MR_HTML5_flight_2023_01_RTU-HB-JUKE_AMP_300x250V02_230113
+//NCH_AMP_Dealer-Winter_ARIYA-XTRAIL_FR_160x600
 const parseBase = (basename) => {
-  //console.log("gulp-zipper parseBase", "basename:", basename);
-  const chunk1 = basename.split("HTML5");
-  //console.log("gulp-zipper parseBase", "chunk1:", chunk1);
+  console.log("gulp-zipper DEFAULT parseBase", "basename:", basename);
+  const chunk1 = basename.split("_AMP_");
   if (chunk1.length === 1) {
     return { name: "fallbacks" };
   }
-  //const chunk2 = chunk1[0].split("_");
-  const chunk3 = chunk1[1].split("_");
-  const sizeParts = chunk3.slice(-2)[0].split("V");
-  const name = chunk3[4];
-  const size = sizeParts[0];
-  const version = sizeParts[1];
-  //console.log("parseBase", "chunk2.slice(0, -2):", chunk2.slice(0, -2));
-  //console.log("parseBase", "chunk3:", chunk3);
-  /* console.log("parseBase", "name:", name);
-  console.log("parseBase", "size:", size);
-  console.log("parseBase", "version:", version); */
+  const chunk2 = chunk1[1].split("_");
+  const name = chunk1[1];
+  const size = chunk2.pop();
   return {
     name: name,
     size: size,
-    version: version,
   };
 };
 
@@ -63,10 +54,10 @@ module.exports = (opts, callback) => {
   let countFiles = 0,
     // encoding could be e.g. utf8
     handleFile = function (file, encoding, next) {
-      let that = this,
-        //isDirectory = file.isNull(),
-        parseObj = path.parse(file.path),
-        baseObj = parseBase(parseObj.base);
+      const that = this;
+      //isDirectory = file.isNull(),
+      const parseObj = path.parse(file.path);
+      const baseObj = typeof opts.parseBase === "function" ? opts.parseBase(parseObj.base) : parseBase(parseObj.base);
       console.log("zip handleFile", "baseObj:", baseObj);
       handle = function (f, p) {
         console.log("gulp-zipper handle:", p.base);
@@ -102,7 +93,8 @@ module.exports = (opts, callback) => {
                 //console.log("zip", "baseObj:", baseObj);
                 let dest = "";
                 if (baseObj.size) {
-                  dest = destination + opts.prefix + baseObj.name + opts.suffix + "_" + baseObj.size + "_" + baseObj.version;
+                  //dest = destination + opts.prefix + baseObj.name + opts.suffix + "_" + baseObj.size + "_" + baseObj.version;
+                  dest = destination + opts.prefix + baseObj.name + opts.suffix + "_" + baseObj.size;
                 } else {
                   //FALLBACKS
                   dest = destination + baseObj.name;
@@ -128,7 +120,6 @@ module.exports = (opts, callback) => {
           return next();
         }
       });
-
     };
 
   // processing non-binary streams
